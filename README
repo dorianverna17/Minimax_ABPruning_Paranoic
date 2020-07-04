@@ -1,0 +1,258 @@
+Verna Dorian-Alexandru
+Grupa 314CC
+
+Tema am ales sa o fac destul de modularizata. Am mai multe
+fisiere, cerinta1.c, cerinta2.c, cerinta3.c si bonus.c fiind
+fisierele sursa care contin implementarile fiecarui task in
+parte.
+Fisierele cerinta1.h, cerinta2.h, cerinta3.h, bonus.h contin
+semnaturile functiilor cerinta1(), cerinta2(), cerinta3() si
+bonus().
+Fisierul sursa main.c contine functia main care este apelata
+prima, si care, in functie de parametrii dati, apeleaza una
+din functiile anterioare.
+fisierul file.h contine declararea structurii de arbore folosit
+Am optat pentru o scriere modularizata, deoarece pana acum nu
+am prea facut asta la teme si m-am gandit ca ar fi cazul sa
+incep sa scriu cod mai frumos si ordonat.
+Cu toate acestea, mi-am dat seama pe masura ce faceam tema ca
+modul in care am ales sa modularizez tema nu este prea bun, 
+deoarece am multe functii ce au nume diferite dar fac acelasi
+lucru. Era bine sa fac un fisier .h care sa contina toate
+aceste functii (precum afisare_arbore sau generare_arbore)
+si pe care sa il includ in fiecare fisier .c mentionat de
+mine anterior, dar nu am mai apucat.
+
+Ideea de implementare a arborelui este similara celei care
+este denumita left-child, right-sibling. Ideea algoritmului meu
+consta in faptul ca un nod este legat doar de un copil al sau,
+copilul fiind cap de lista intr-o lista care contine toti
+ceilalti copii ai nodului. Asta a fost ideea mea initiala pe
+care ma apucasem sa o implementez, apoi am vazut pe forum o
+intrebare la care a fost mentionat tipul de implementare cu
+left si right si am descoperit analogia dintre ele in acest mod. 
+
+
+Task 1
+
+Aici mi s-a parut mai usor sa codific tabla de joc sub forma unei
+matrice de int-uri. Am facut acest lucru deoarece m-am gandit ca
+ar fi mai econom decat sa fac o matrice de char-uri, ar fi mai
+usor sa dictez jucatorul al carui rand este atunci cand apelez
+recursiv (unul este 1, iar celalalt este -1, deci doar pun un minus),
+si, pe de alta parte, imi e mie mai usor sa lucrez cu o matrice de
+numere (este mai intuitiv).
+1 reprezinta B, -1 reprezinta R, iar 0 reprezinta -.
+
+La task-ul 1 am 11 functii:
+1) init_root - Functie care imi initializeaza radacina arborelui,
+in functie de inputul dat din fisier
+2) afisare_nod - Functie care, odata apelata, imi afiseaza un nod dat.
+Decodifica matricea si afiseaza cu char in loc de numere.
+3) verificare_frunza - Functie care verifica daca un nod din arbore
+este un nod terminal (o frunza) - fie o stare in care nu se mai poate
+face nicio mutare, fie o stare in care un jucator a castigat. Functia
+reurneaza 1 daca este frunza si 0 daca nu
+4) init_nod - Functie care initializeaza un nod oarecare de arbore.
+Este o functie ajutatoare pe care o apelez atunci cand generez
+recursiv arborele
+5) generare_nod - Functie care imi genereaza nodul. aceasta functie
+returneaza un pointer la nodul generat, sau NULL daca nu se poate
+generea nod.
+6) inserare_nod - Functie care imi insereaza nodul in lista, iar, in
+cazul in care vorbim de primul copil al parintelui, il legam pe parinte
+de el si pe nod il facem cap de lista.
+7) generare_arbore - Functia de generare arbore care imi genereaza
+recursiv arborele
+8) afisare_arbore - Functia care imi afiseaza recursiv arborele (in
+fisier). Aceasta functie apeleaza si functia afisare_nod. Se scrie
+arborele in fisier la apelul acesteia.
+9) eliberare_nod - Functie ajutatoare, acesta elibereaza memoria unui
+nod
+10) eliberare_memorie - Functie recursiva care are rolul de a elibera
+la sfarsit memoria alocata elementelor arborelui. Aceasta functie
+apeleaza de mai multe ori functia eliberare_nod
+11) cerinta1 -Functie care este apelata in functia main din main.c
+Aceasta contine declaratii de variabile si apelurile functilor date
+anterior.
+
+Task 2
+
+Functia cerinta2() se ocupa de rezolvarea task-ului 2. Aceasta, precum
+si functiile ajutatoare necesare se regasesc in fisierul sursa cerinta2.c
+
+Am considerat ca ar fi bine sa completez structura de la task-ul anterior
+cu inca o valoare int si anume value_min, aceasta reprezentand valoarea
+dintr-un nod in contextul algoritmului minimax.
+
+In rezolvarea cerintei am folosit 9 functii:
+1) init_node2 - Aceasta functie imi initializeaza un nod oarecare.
+Functia este pe acelasi model cu cea de la cerinta 1. De notat este
+fapul ca initializez value_min cu un numar pe care l-am considerat putin
+probabil sa il intalnesc in fisierele de intrate: -100000.
+2) inserare_noduri - Aceasta este o functie ajutatoare pentru functia de
+generare noduri. O folosesc pentru a insera un anumit numar nr (dat ca
+parametru) de fii unui nod de arbore root, dat si el ca parametru.
+3) afisare_arbore_min - Functie de scriere in fisier a arborelui rezultat.
+Aceasta functie este similara celei de la primul task.
+4) seek_aux - functie ajutatoare pentru cea de generare arbore. Aceasta
+functie imi returneaza un pointer la un element al arborelui. Acest element
+il actualizez la trecerea pe un alt nivel al arborelui atunci cand citesc
+valorile nodurilor sau numarul de fii al acestora. Basically, functia
+returneaza un pointer catre primul element de pe nivelul dat ca parametru
+din arbore, care sa nu fie frunza. Elementul va constitui valoarea initiala
+pe care o va lua iteratorul it in functia generare_arbore2.
+5) generare_arbore2 - Aceasta este functia care imi genereaza arborele.
+Prima oara ma ocup de cazul in care trebuie sa introduc in arbore fiii
+radacinii, apoi, pe un else, ma ocup de restul nivelelor arborelui. Aici
+citesc pe rand un numar nr de valori, care reprezinta numarul de valori de
+pe linia din fisier corespunzatoare acelui nivel. Numarul nr il actualizez
+de fiecare data cand termin de citit o linie. Iteratorul it porneste de la
+valoarea aux descrisa la functia anterioara si, pe baza mai multor conditii,
+determina pozitia viitorului element pe care il voi citi in arbore. Am
+ales sa fac aceasta functie nerecursiv. Nu stiu daca se putea face recursiv.
+Pe moment chiar nu am stiut cum sa o fac si in cap imi venea doar ideea
+aceasta de implementare. Am incercat sa economisesc memorie si sa nu
+salvez dintr-o data o linie intr-un buffer, ci sa citesc pe rand fiecare
+valoare din fisier, lucru care s-a dovedit totusi foarte greu. Mi-a luat
+foarte mult sa gasesc toate cazurile pentru care a trebuit sa pun conditii.
+Functia poate fi greu de citit, dar pana la urma am reusit sa gasesc toate
+conditiile necesare. Am folosit chiar niste functii precum fseek, ftell si
+instructiunea goto. Fseek si ftell le-am folosit la un moment dat pentru a
+determina oprirea executiei functiei atunci cand se ajunge la sfarsitul
+fisierului, deoarece am suspectat ca unele erori pe care le aveam la valgrind
+veneau de la urmatoarele miscari pe care le faceam in functie, dar care erau
+redundante, fiind sfarsitul fisierului. Comanda goto am folosit-o deoarece
+multe conditii trebuiau repetate, iar eu am considerat in acel moment mai
+ok si mai intuitiv sa folosesc goto.
+6) umple_arbore - functie recursiva care se ocupa de implementarea propriu-zisa
+a algoritmului minimax, punand in nodurile superioare ale arborelui elementele
+necesare, respectand regula Mini - Max. Functia aceasta a fost mul mai usor
+de implementat decat cea de generare arbore.
+7) eliberare_nod_min - Functie de eliberare a memoriei unui nod - similara
+functiei de la cerinta 1
+8) eliberare_memorie_min - Functie recursiva de eliberare a memoriei
+arborelui. Functie similara cu cea de la cerinta 1.
+9) cerinta2 - Functie care contine apelurile functiilor anterioare si
+declarari de variabile.
+
+Task 3
+
+Pentru acest task am introdus inca doua valori in structura de la cerintele
+anterioare, structura pe care o am implementata in tree.h. Am introdus,
+asadar, pe alpha si beta, doua int-uri.
+
+Cerinta contine 10 functii, noua dintre ele fiind identice sau aproape
+identice cu cele de la cerinta 2 si anume (le-am pus si nume sugestive):
+1) init_node_task3
+2) inserare_noduri_task3
+3) seek_aux_task3
+4) generare_arbore_task3
+5) afisare_arbore_task3
+6) eliberare_nod_task3
+7) eliberare_memorie_task3
+8) umple_arbore_task3
+9) cerinta3
+
+Functia cerinta3 difera putin prin diferitele apeluri de functie.
+
+A 10-a functie, alpha_beta_pruning este cea care face diferenta intre ce am
+implementat in cerinta2.c si ce am implementat in cerinta3.c. Aceasta este
+o functie recursiva care parcuge fiecare nod. Fiecare nod are doua valori
+alpha si beta pe care i le-am atribuit si care se modifica pe parcursul
+executiei programului, in functie de nivelul pe care ma aflu si de valorile
+alpha si beta ale copiilor si parintilor unde este cazul. Asa cum spune si
+algoritmul, ele determina si daca prezenta unui subarbore este reduntanta
+sau nu. Mi-a luat putin sa inteleg algoritmul, motiv pentru care primele
+3 teste care au fost trimise de voi le-am facut prima oara pe hartie ca sa
+imi dau seama cum functioneaza.
+
+Task 4
+
+Bonus
+
+Pentru bonus am folosit o noua structura de arbore (tree_node_para),
+aceasta continand pointerii next, prev, parent si child si un vector
+de valori int value (dat ca pointer deoarece acesta contine nr_players + 1
+elemente, deci il aloc dinamic in functie de cati jucatori am). Vectorii
+sunt initializati cu calloc, iar daca un anume nod din arbore este frunza,
+atunci primul element al acestuia devine din 0 1. Asa am ales sa diferentiez
+frunzele de nodurile din interior.
+
+Functiile seamana ca idee cu cele de la task-urile 2 si 3, dar sunt adaptate
+pentru lucrul cu un vector de int pentru un nod si nu cu o valoare int
+pentru un nod
+
+In fisierul bonus.c am implementate 10 functii:
+1) init_node_bonus - functie care contine initializarea unui nod de tipul
+tree_node_para (alocare nod si alocare vector cu nr_players + 1). De notat este
+ca vectorul este initializat cu zerouri.
+2) inserare_noduri_bonus - Functie de inserare a unui numar de fii unui nod
+din arbore. Aceasta functie este apelata de functia de generare arbore. Ea
+similara cu functiile folosite anterior.
+3) seek_aux_bonus - Functie asemanatoare cu cele de la task-urile anterioare,
+ajutatoare pentru generarea arborilor. Adaptata la problema de fata.
+4) generare_arbore_bonus_helper - spre deosebire de task-ul 2 si 3, aici am
+spart functia de generare arbore in doua, una care sa se ocupe de generarea
+propriu-zisa si o alta care sa imi calculeze iteratorul it printre noduri
+pentru fiecare pas. Functia helper este cea care imi calculeaza acest iterator.
+Practic este o parte din codul de la functiile de generare de dinainte, numai
+ca introdusa in alta functie.
+5) generare_arbore_bonus - functia propriu-zisa de generare a arborelui. Si
+in acest caz am citit fiecare element pe rand din fisier (triplet cand a fost
+cazul). Apoi am folosit strtok pentru elementele de tip frunza, pentru a 
+introduce valorile necesare in vectorul value continut in nodul respectiv.
+In rest, functia seamana cu cele de la task-urile anterioare ca idee.
+6) afisare_arbore_bonus - Functia de scriere a arborelui in fisier.
+7) eliberare_nod_bonus - Functie de eliberare memorie a unui nod de arbore
+8) eliberare_memorie_bonus - functie care se ocupa de eliberarea memoriei
+arborelui la sfarsit. Functie recursiva care apeleaza functia precedenta.
+9) umple_arbore_bonus - Functia care umple arborele cu valorile cerute la
+bonus. Functia merge pe aceeasi idee ca cea de la minimax, doar ca de data,
+aceasta nu mai returneaza o simpla valoare int, ci un pointer la adresa unui
+vector de int-uri. Pentru comparare insa, nu folosesc acest vector, ci prima
+valoare a acestuia. Deoarece functia nu imi mai mergea atunci cand reveneam pe
+nivelurile superioare ale arborelui (trebuia sa retin in alt vector minimul
+sau maximul avut pana atunci pe ramura aceea de nivel). Astfel, vectorul
+copie este aux, pe acesta il folosesc in comparatiile pe care le fac. 
+10) bonus - functia care este apelata in main.c. Este functia care contine
+apelurile de pana acum.
+
+Aspecte suplimentare:
+
+- Am folosit la task-ul 2, 3 si bonus functiile fseek, ftell si rewind.
+Am facut aceasta deoarece primeam in generare_arbore o eroare si am
+considerat ca poate fi din aceasta cauza. Eroarea am considerat ca este
+atunci cand incerc sa caut un nou it atunci cand am ajuns la finalul
+fisierului, neavand unde sa mai pun o eventuala valoare noua. Deci,
+verific daca este finalul fisierului si ies din functie daca conditia
+este verificata. De asemenea, consider ca reprezinta si o mica
+eficientizare a codului, posibil neimportanta.
+
+- Legat de coding style, am intrebat si pe forum, mi s-a spus ca se va folosi
+un checker similar cu cel de la tema1. Eu am verificat cu acel checker si nu
+am nicio eroare. Sper sa fie ok, am pus si comentarii in cod acolo unde am
+considerat necesar. Am intrebat deoarece nu eram sigur asupra unei functii
+unde am multe conditii si am indentat mult, iar checker-ul imi dadea eroare
+pentru ca aveam prea multe niveluri de indentare, desi acestea erau corecte,
+asa ca am sters unele tab-uri, indentarea parandu-mi putin dubioasa mie, dar
+macar checker-ul nu mai dadea eroare.
+
+- Ca timp tema mi-a luat aproape o saptamana cu cateva ore de lucru in
+fiecare zi (3 - 4).
+
+- Cel mai greu task a fost task-ul 2 pentru ca acolo trebuia sa gasesc o
+modalitate sa citesc din fisier si sa fac arborele in acelasi timp. Pana
+la urma am gasit doar o modalitate iterativa. Toate celelalte task-uri de
+pe urma nu au mai fost asa de grele.
+
+- A fost o tema ok, la inceput nu am fost multumit pentru ca nu aveam checker
+si nici nu aveam toate testele trimise si era putin stresant, dar cred ca
+oricum am ramas cu un plus, deoarece am invatat pana la urma sa rezolv
+problemele chiar si in lipsa unor resurse pe care le consideram foarte
+importante. In rest a fost ok si mie mi-a placut.
+
+Multumesc si well done pt ideea temei
+
+Verna Dorian-Alexandru
+314CC
